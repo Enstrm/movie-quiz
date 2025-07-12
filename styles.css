@@ -99,7 +99,7 @@ body {
   align-items: center;
   margin: 5px 0;
   cursor: pointer;
-  transition: transform 0.15s ease-in-out;
+  transition: transform 0.2s ease-in-out;
 }
 
 .option-row:hover {
@@ -189,10 +189,14 @@ body {
   z-index: 999;
   justify-content: center;
   align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
 }
 
-.hidden {
-  display: none !important;
+#popup-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .popup-menu {
@@ -204,6 +208,14 @@ body {
   height: 250px;
   width: 500px;
   align-items: center;
+  transform: scale(0.9);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+#popup-overlay.visible .popup-menu {
+  transform: scale(1);
+  opacity: 1;
 }
 
 .questions {
@@ -215,9 +227,8 @@ body {
   display: flex;
   height: 70px;
   width: 70px;
-  border-style: solid;
-  border-radius: 5px;
-  border-width: 1.5px;
+  border: 2px solid #9d9d9d;
+  border-radius: 10px;
   margin: 10px;
   justify-content: center;
   align-items: center;
@@ -228,6 +239,12 @@ body {
 
 .question-box:hover {
   scale: 1.10;
+}
+
+.question-box.selected {
+  background-color: #9d9d9d;
+  border: 2px solid #000000;
+  font-weight: 550;
 }
 
 .button-row {
@@ -250,10 +267,5 @@ body {
   border-width: 1px;
   background-color: #FFFAEE;
 }
-
-#play-button{
-  background-color: #d1d1d1;
-}
-
 
 

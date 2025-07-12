@@ -28,7 +28,7 @@
     </div>
     <div class="main">
         <div class="option-menu">
-            <div class="option-row">
+            <div class="option-row" data-quiz-type="random">
                 <div class="option-icon">
                     <img src="assets/images/004fffc3f0cff150a52018f744238455.png" alt="Question mark">
                 </div>
@@ -37,7 +37,7 @@
                     <p class="option-subtitle">Combination of movie quotes, frames and emojis</p>
                 </div>
             </div>
-            <div class="option-row">
+            <div class="option-row" data-quiz-type="quotes">
                 <div class="option-icon">
                     <img src="assets/images/avrw837oa.png" alt="Quote icon">
                 </div>
@@ -46,7 +46,7 @@
                     <p class="option-subtitle">Guess the movie from the famous quote</p>
                 </div>
             </div>
-            <div class="option-row">
+            <div class="option-row" data-quiz-type="frames">
                 <div class="option-icon clapper-icon">
                     <img src="assets/images/clapper-icon-flat-vector-illustration-600nw-1439271683.png" alt="Clapper icon">
                 </div>
@@ -55,7 +55,7 @@
                     <p class="option-subtitle">Guess the movie from frames</p>
                 </div>
             </div>
-            <div class="option-row">
+            <div class="option-row" data-quiz-type="emojis">
                 <div class="option-icon emoji-icon">
                     <img src="assets/images/emoji-smile-icon-2048x2048-93ogyjms.png" alt="Emoji icon">
                 </div>
@@ -72,14 +72,14 @@
             <a href="#">Contact</a>
         </div>
     </div>
-    <div id="popup-overlay" class="hidden">
+    <div id="popup-overlay">
         <div class="popup-menu">
             <h2>Questions</h2>
             <div class="questions">
-                <button class="question-box">5</button>
-                <button class="question-box">10</button>
-                <button class="question-box">15</button>
-                <button class="question-box">20</button>
+                <button class="question-box" data-count="5">5</button>
+                <button class="question-box" data-count="10">10</button>
+                <button class="question-box" data-count="15">15</button>
+                <button class="question-box" data-count="20">20</button>
             </div>
             <div class="button-row">
                 <button class="button">Filters</button>
