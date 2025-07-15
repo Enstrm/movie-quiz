@@ -6,7 +6,6 @@ function setupPopupMenu(overlay, popupMenu) {
       event.stopPropagation();
       overlay.classList.add("visible");
       userSession.quizType = row.dataset.quizType;
-      console.log("User Session:", userSession);
     });
   });
 
@@ -19,7 +18,8 @@ function setupPopupMenu(overlay, popupMenu) {
       userSession.questionCount = null;
       userSession.quizType = null;
       resetQuestionButton();
-      console.log("User Session:", userSession);
+      resetPlayButton();
+      popupMenu.classList.remove("extended");
     }
   });
 }
@@ -28,22 +28,47 @@ function resetQuestionButton() {
   document.querySelectorAll(".question-box").forEach((b) => b.classList.remove("selected"));
 }
 
-function questionButtonChooser(buttons) {
-  buttons.forEach((button) => {
+function questionButtonChooser(questionButtons) {
+  questionButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      buttons.forEach((b) => b.classList.remove("selected"));
+      questionButtons.forEach((b) => b.classList.remove("selected"));
       button.classList.add("selected");
       userSession.questionCount = button.dataset.count;
-      console.log("User Session:", userSession);
     })
+  })
+}
+
+function playButtonActivator(playButton, questionButtons) {
+  questionButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      playButton.classList.add("activated");
+    })
+  })
+}
+
+function resetPlayButton () {
+  document.getElementById("play-button").classList.remove("activated");
+}
+
+function popupMenuExtender (filterButton, popupMenu) {
+  filterButton.addEventListener("click", () => {
+    if (!popupMenu.classList.contains("extended")){
+      popupMenu.classList.add("extended");
+    } else {
+      popupMenu.classList.remove("extended");
+    }
   })
 }
 
 document.addEventListener("DOMContentLoaded", function () {
   const overlay = document.getElementById("popup-overlay");
   const popupMenu = document.querySelector(".popup-menu");
-  const buttons = document.querySelectorAll(".question-box");
+  const questionButtons = document.querySelectorAll(".question-box");
+  const playButton = document.getElementById("play-button");
+  const filterButton = document.getElementById("filter-button");
 
   setupPopupMenu(overlay, popupMenu);
-  questionButtonChooser(buttons);
+  questionButtonChooser(questionButtons);
+  playButtonActivator(playButton, questionButtons);
+  popupMenuExtender(filterButton, popupMenu);
 });
