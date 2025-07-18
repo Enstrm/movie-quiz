@@ -304,7 +304,7 @@ body {
   width: 100%;
 }
 
-.popup-menu.extended .filter-menu {
+.filter-menu.visible {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
@@ -315,5 +315,35 @@ body {
   flex-direction: row;
   width: 80%;
   justify-content: flex-start;
-  gap: 2rem;
+  align-items: center;
+}
+
+h4 {
+  height: 20px;
+  width: 150px;
+}
+
+.dropdown {
+  display: flex;
+  flex-direction: row;
+  height: 25px;
+  width: 150px;
+  border: solid 2px #9d9d9d;
+  border-radius: 5px;
+  align-items: center;
+  cursor: pointer;
+  justify-content: space-between;
+}
+
+.dropdown-text {
+  padding: 10px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }

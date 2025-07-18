@@ -1,6 +1,6 @@
 const userSession = {quizType: null, questionCount: null};
 
-function setupPopupMenu(overlay, popupMenu) {
+function setupPopupMenu(overlay, popupMenu, filterMenu) {
   document.querySelectorAll(".option-row").forEach((row) => {
     row.addEventListener("click", (event) => {
       event.stopPropagation();
@@ -20,6 +20,7 @@ function setupPopupMenu(overlay, popupMenu) {
       resetQuestionButton();
       resetPlayButton();
       popupMenu.classList.remove("extended");
+      filterMenu.classList.remove("visible");
     }
   });
 }
@@ -50,15 +51,23 @@ function resetPlayButton () {
   document.getElementById("play-button").classList.remove("activated");
 }
 
-function popupMenuExtender (filterButton, popupMenu) {
+function popupMenuExtender(filterButton, popupMenu, filterMenu) {
   filterButton.addEventListener("click", () => {
-    if (!popupMenu.classList.contains("extended")){
-      popupMenu.classList.add("extended");
-    } else {
-      popupMenu.classList.remove("extended");
+    if (popupMenu.classList.contains("extended")) {
+      filterMenu.classList.remove("visible");
     }
-  })
+    popupMenu.classList.toggle("extended");
+  });
+
+  popupMenu.addEventListener("transitionend", (e) => {
+    if (e.propertyName === "height") {
+      if (popupMenu.classList.contains("extended")) {
+        filterMenu.classList.add("visible");
+      }
+    }
+  });
 }
+
 
 document.addEventListener("DOMContentLoaded", function () {
   const overlay = document.getElementById("popup-overlay");
@@ -66,9 +75,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const questionButtons = document.querySelectorAll(".question-box");
   const playButton = document.getElementById("play-button");
   const filterButton = document.getElementById("filter-button");
+  const filterMenu = document.querySelector(".filter-menu");
 
-  setupPopupMenu(overlay, popupMenu);
+  setupPopupMenu(overlay, popupMenu, filterMenu);
   questionButtonChooser(questionButtons);
   playButtonActivator(playButton, questionButtons);
-  popupMenuExtender(filterButton, popupMenu);
+  popupMenuExtender(filterButton, popupMenu, filterMenu);
 });
