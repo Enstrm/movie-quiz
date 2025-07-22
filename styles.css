@@ -61,22 +61,6 @@ body {
   margin: 0 5px;
 }
 
-.hamburger-menu {
-  grid-column: 3;
-  justify-self: end;
-  width: 30px;
-  height: 22px;
-  cursor: pointer;
-}
-
-.hamburger-menu span {
-  display: block;
-  height: 3px;
-  background-color: #FFFAEE;
-  border-radius: 2.5px;
-  margin: 4px;
-}
-
 .main {
   flex: 1;
   display: flex;
@@ -316,6 +300,22 @@ body {
   width: 80%;
   justify-content: flex-start;
   align-items: center;
+  gap: 1rem;
+}
+
+.reset-button {
+  padding: 0.3rem 0.8rem;
+  border: 2px solid #9d9d9d;
+  border-radius: 6px;
+  background-color: #FFFAEE;
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.reset-button:hover {
+  background-color: #EDE5D4;
 }
 
 h4 {
@@ -326,6 +326,11 @@ h4 {
 .dropdown {
   position: relative;
   width: 150px;
+}
+
+.filter-dropdown[data-key="year-start"],
+.filter-dropdown[data-key="year-end"] {
+  width: 100px;
 }
 
 .dropdown-toggle {
@@ -354,13 +359,13 @@ h4 {
 
   max-height: 8rem;
   overflow-y: auto;
-  opacity: 1;
-  pointer-events: auto;
+  opacity: 0;
+  pointer-events: none;
   transform: translateY(-10px);
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-.dropdown.open .dropdown-menu {
+.dropdown-menu.visible {
   opacity: 1;
   pointer-events: auto;
   transform: translateY(0);

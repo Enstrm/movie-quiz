@@ -1,4 +1,5 @@
-const userSession = {quizType: null, questionCount: null};
+const userSession = {quizType: null, questionCount: null,
+                    genre: null, yearStart: null, yearEnd: null};
 
 function setupPopupMenu(overlay, popupMenu, filterMenu) {
   document.querySelectorAll(".option-row").forEach((row) => {
@@ -21,6 +22,7 @@ function setupPopupMenu(overlay, popupMenu, filterMenu) {
       resetPlayButton();
       popupMenu.classList.remove("extended");
       filterMenu.classList.remove("visible");
+      dropdownMenu.classList.remove("visible");
     }
   });
 }
@@ -68,6 +70,42 @@ function popupMenuExtender(filterButton, popupMenu, filterMenu) {
   });
 }
 
+function setupDropdown(dropdownEl, onSelectCallback = null) {
+  const dropdownToggle = dropdownEl.querySelector(".dropdown-toggle");
+  const dropdownMenu   = dropdownEl.querySelector(".dropdown-menu");
+  const dropdownItems  = dropdownMenu.querySelectorAll("li");
+  const dropdownText   = dropdownEl.querySelector(".dropdown-text");
+
+  dropdownToggle.addEventListener("click", (e) => {
+    e.stopPropagation();
+
+    document.querySelectorAll(".dropdown-menu.visible").forEach(menu => {
+      if (menu !== dropdownMenu) {
+        menu.classList.remove("visible");
+      }
+    });
+
+    dropdownMenu.classList.toggle("visible");
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!dropdownToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
+      dropdownMenu.classList.remove("visible");
+    }
+  });
+
+  dropdownItems.forEach((item) => {
+    item.addEventListener("click", () => {
+      dropdownText.innerHTML = item.innerHTML;
+      dropdownMenu.classList.remove("visible");
+
+      if (onSelectCallback) {
+        onSelectCallback(item.dataset.value, dropdownEl);
+      }
+    });
+  });
+}
+
 
 document.addEventListener("DOMContentLoaded", function () {
   const overlay = document.getElementById("popup-overlay");
@@ -76,6 +114,24 @@ document.addEventListener("DOMContentLoaded", function () {
   const playButton = document.getElementById("play-button");
   const filterButton = document.getElementById("filter-button");
   const filterMenu = document.querySelector(".filter-menu");
+  const dropdownGenre = document.querySelector('[data-key="genre"]');
+  const dropdownYearStart = document.querySelector('[data-key="year-start"]');
+  const dropdownYearEnd = document.querySelector('[data-key="year-end"]');
+
+  setupDropdown(dropdownGenre, (value) => {
+    userSession.genre = value;
+    console.log("Genre selected:", value);
+  });
+
+  setupDropdown(dropdownYearStart, (value) => {
+    userSession.yearStart = value;
+    console.log("Start year:", value);
+  });
+
+  setupDropdown(dropdownYearEnd, (value) => {
+    userSession.yearEnd = value;
+    console.log("End year:", value);
+  });
 
   setupPopupMenu(overlay, popupMenu, filterMenu);
   questionButtonChooser(questionButtons);
