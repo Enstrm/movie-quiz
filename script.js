@@ -1,5 +1,16 @@
-const userSession = {quizType: null, questionCount: null,
-                    genre: null, yearStart: null, yearEnd: null};
+const userSession = {
+  quizType: null, 
+  questionCount: null,           
+  genre: null, 
+  yearStart: null, 
+  yearEnd: null
+};
+
+const defaultDropdownLabels = {
+  "genre": "Select genre",
+  "year-start": "From",
+  "year-end": "To"
+};
 
 function setupPopupMenu(overlay, popupMenu, filterMenu) {
   document.querySelectorAll(".option-row").forEach((row) => {
@@ -7,6 +18,7 @@ function setupPopupMenu(overlay, popupMenu, filterMenu) {
       event.stopPropagation();
       overlay.classList.add("visible");
       userSession.quizType = row.dataset.quizType;
+      console.log(userSession);
     });
   });
 
@@ -20,9 +32,10 @@ function setupPopupMenu(overlay, popupMenu, filterMenu) {
       userSession.quizType = null;
       resetQuestionButton();
       resetPlayButton();
+      clearAllFilters();
       popupMenu.classList.remove("extended");
       filterMenu.classList.remove("visible");
-      dropdownMenu.classList.remove("visible");
+      console.log(userSession);
     }
   });
 }
@@ -37,6 +50,7 @@ function questionButtonChooser(questionButtons) {
       questionButtons.forEach((b) => b.classList.remove("selected"));
       button.classList.add("selected");
       userSession.questionCount = button.dataset.count;
+      console.log(userSession);
     })
   })
 }
@@ -96,16 +110,43 @@ function setupDropdown(dropdownEl, onSelectCallback = null) {
 
   dropdownItems.forEach((item) => {
     item.addEventListener("click", () => {
-      dropdownText.innerHTML = item.innerHTML;
+      dropdownText.textContent = item.textContent;
       dropdownMenu.classList.remove("visible");
 
       if (onSelectCallback) {
-        onSelectCallback(item.dataset.value, dropdownEl);
+        onSelectCallback(item.textContent, dropdownEl);
       }
     });
   });
 }
 
+function normalizeKey(key) {
+  const mapping = {
+    "year-start": "yearStart",
+    "year-end": "yearEnd"
+  };
+  return mapping[key] || key;
+}
+
+function clearAllFilters() {
+  const dropdowns = document.querySelectorAll(".filter-dropdown");
+
+  dropdowns.forEach(dropdown => {
+    const textEl = dropdown.querySelector(".dropdown-text");
+    const clearEl = dropdown.querySelector(".dropdown-clear");
+
+    const key = dropdown.dataset.key;
+    const defaultLabel = defaultDropdownLabels[key] || "Select " + key;
+    textEl.innerHTML = defaultLabel;
+
+    if (clearEl) {
+      clearEl.classList.remove("visible");
+    }
+
+    userSession[normalizeKey(key)] = null;
+    console.log(userSession);
+  });
+}
 
 document.addEventListener("DOMContentLoaded", function () {
   const overlay = document.getElementById("popup-overlay");
@@ -114,23 +155,28 @@ document.addEventListener("DOMContentLoaded", function () {
   const playButton = document.getElementById("play-button");
   const filterButton = document.getElementById("filter-button");
   const filterMenu = document.querySelector(".filter-menu");
+  const resetButton = document.getElementById("reset-filters");
   const dropdownGenre = document.querySelector('[data-key="genre"]');
   const dropdownYearStart = document.querySelector('[data-key="year-start"]');
   const dropdownYearEnd = document.querySelector('[data-key="year-end"]');
 
+  resetButton.addEventListener("click", () => {
+    clearAllFilters();
+  });
+
   setupDropdown(dropdownGenre, (value) => {
     userSession.genre = value;
-    console.log("Genre selected:", value);
+    console.log(userSession);
   });
 
   setupDropdown(dropdownYearStart, (value) => {
     userSession.yearStart = value;
-    console.log("Start year:", value);
+    console.log(userSession);
   });
 
   setupDropdown(dropdownYearEnd, (value) => {
     userSession.yearEnd = value;
-    console.log("End year:", value);
+    console.log(userSession);
   });
 
   setupPopupMenu(overlay, popupMenu, filterMenu);
